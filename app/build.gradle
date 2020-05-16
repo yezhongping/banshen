@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.unity.ddzjdb"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.3"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('zongyi')
+            storePassword '146286'
+            keyAlias 'zongyi'
+            keyPassword '146286'
+        }
+        release {
+            storeFile file('zongyi')
+            storePassword '146286'
+            keyAlias 'zongyi'
+            keyPassword '146286'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation project(':verifiy_name_sdk')
+
+}
