@@ -2,6 +2,7 @@ package com.banhao.support;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -52,6 +53,10 @@ public class LoginDialog extends Dialog {
         Register = findViewById(R.id.registerButton);
         Register.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         Register.getPaint().setAntiAlias(true);//抗锯齿
+
+        if(!CheckIsDataAlreadyInDBOrNot("zongyi")){
+            RegisterUserInfo("zongyi", "123456");
+        }
         if(SharedPreferencesUtil.getRecord(activity,"account")!=null)
         {
             account.setText(SharedPreferencesUtil.getRecord(activity,"account"));
@@ -127,6 +132,27 @@ public class LoginDialog extends Dialog {
             cursor.close();
             return true;
         }
+        return false;
+    }
+
+    private void RegisterUserInfo(String username, String password) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, username);
+        values.put(PASSWORD, password);
+        db.insert(USER_TABLE, null, values);
+        db.close();
+    }
+
+    private boolean CheckIsDataAlreadyInDBOrNot(String username) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String sql = "select * from "+USER_TABLE+" where "+USERNAME+"=?";
+        Cursor c = db.rawQuery(sql, new String[]{username});
+        if (c.getCount() > 0) {
+            c.close();
+            return true;
+        }
+        c.close();
         return false;
     }
 }

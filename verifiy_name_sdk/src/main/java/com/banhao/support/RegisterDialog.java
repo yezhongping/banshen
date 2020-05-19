@@ -112,10 +112,10 @@ public class RegisterDialog extends Dialog implements View.OnClickListener{
         db.close();
     }
 
-    private boolean CheckIsDataAlreadyInDBOrNot(String phone) {
+    private boolean CheckIsDataAlreadyInDBOrNot(String username) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "select * from "+USER_TABLE+" where "+USERNAME+"=?";
-        Cursor c = db.rawQuery(sql, new String[]{phone});
+        Cursor c = db.rawQuery(sql, new String[]{username});
         if (c.getCount() > 0) {
             c.close();
             return true;
